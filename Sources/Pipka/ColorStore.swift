@@ -2,7 +2,7 @@ import AppKit
 import SwiftUI
 
 enum ColorFormat: String, CaseIterable, Identifiable {
-    case hex, rgb, hsl, oklch, oklab
+    case hex, rgb, rgba, hsl, oklch, oklab
 
     var id: String { rawValue }
 
@@ -10,6 +10,7 @@ enum ColorFormat: String, CaseIterable, Identifiable {
         switch self {
         case .hex: "HEX"
         case .rgb: "RGB"
+        case .rgba: "RGBA"
         case .hsl: "HSL"
         case .oklch: "OKLCH"
         case .oklab: "OKLab"
@@ -79,10 +80,12 @@ struct RGBColor: Codable, Hashable {
         case .hex:
             return hex
         case .rgb:
-            return "rgb(\(r255) \(g255) \(b255))"
+            return "rgb(\(r255), \(g255), \(b255))"
+        case .rgba:
+            return "rgba(\(r255), \(g255), \(b255), 1)"
         case .hsl:
             let v = hsl
-            return "hsl(\(v.h) \(v.s)% \(v.l)%)"
+            return "hsl(\(v.h), \(v.s)%, \(v.l)%)"
         case .oklab:
             let v = oklab
             return String(format: "oklab(%.1f%% %.3f %.3f)", v.l * 100, Self.clean(v.a), Self.clean(v.b))

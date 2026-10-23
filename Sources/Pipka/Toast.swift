@@ -76,10 +76,10 @@ private struct ToastView: View {
 
     var body: some View {
         HStack(spacing: 8) {
-            Circle()
+            Droplet()
                 .fill(color.color)
-                .frame(width: 18, height: 18)
-                .overlay(Circle().strokeBorder(.white.opacity(0.35), lineWidth: 1))
+                .overlay(Droplet().stroke(.white.opacity(0.4), lineWidth: 1))
+                .frame(width: 14, height: 19.6)
             Text(text)
                 .font(.system(size: 13, weight: .semibold, design: .monospaced))
                 .foregroundStyle(.white)
