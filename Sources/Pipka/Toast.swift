@@ -77,7 +77,7 @@ private struct ToastView: View {
     var body: some View {
         HStack(spacing: 8) {
             Droplet()
-                .fill(color.color)
+                .fill(color.dropGradient)
                 .overlay(Droplet().stroke(.white.opacity(0.4), lineWidth: 1))
                 .frame(width: 14, height: 19.6)
             Text(text)

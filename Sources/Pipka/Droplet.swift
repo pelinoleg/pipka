@@ -29,6 +29,23 @@ struct Droplet: Shape {
     }
 }
 
+extension RGBColor {
+    var cgColor: CGColor { NSColor(srgbRed: r, green: g, blue: b, alpha: 1).cgColor }
+
+    /// Mixes towards white (1) or black (0).
+    func mixed(with v: Double, by t: Double) -> RGBColor {
+        var c = self
+        c.r += (v - r) * t; c.g += (v - g) * t; c.b += (v - b) * t
+        return c
+    }
+
+    /// Lighter-to-darker gradient of the same color.
+    var dropGradient: LinearGradient {
+        LinearGradient(colors: [mixed(with: 1, by: 0.3).color, color, mixed(with: 0, by: 0.25).color],
+                       startPoint: .topLeading, endPoint: .bottomTrailing)
+    }
+}
+
 enum StatusIcon {
     static let gap: CGFloat = 4
     static let chevronSize = NSSize(width: 7, height: 4)
@@ -46,18 +63,15 @@ enum StatusIcon {
             ctx.saveGState()
             ctx.addPath(path)
             ctx.clip()
-            if let color {
-                ctx.setFillColor(NSColor(srgbRed: color.r, green: color.g, blue: color.b, alpha: 1).cgColor)
-                ctx.fill(dropRect)
-            } else {
-                let gradient = CGGradient(colorsSpace: CGColorSpace(name: CGColorSpace.sRGB),
-                                          colors: [NSColor(srgbRed: 1, green: 0.42, blue: 0.53, alpha: 1).cgColor,
-                                                   NSColor(srgbRed: 0.72, green: 0.3, blue: 1, alpha: 1).cgColor,
-                                                   NSColor(srgbRed: 0.24, green: 0.48, blue: 1, alpha: 1).cgColor] as CFArray,
-                                          locations: [0, 0.55, 1])!
-                ctx.drawLinearGradient(gradient, start: CGPoint(x: dropRect.minX, y: dropRect.maxY),
-                                       end: CGPoint(x: dropRect.maxX, y: dropRect.minY), options: [])
-            }
+            // Same color, a bit lighter at the top and darker at the bottom — gives the drop some volume.
+            let colors: [CGColor] = color.map { [$0.mixed(with: 1, by: 0.3).cgColor, $0.cgColor, $0.mixed(with: 0, by: 0.25).cgColor] }
+                ?? [NSColor(srgbRed: 1, green: 0.42, blue: 0.53, alpha: 1).cgColor,
+                    NSColor(srgbRed: 0.72, green: 0.3, blue: 1, alpha: 1).cgColor,
+                    NSColor(srgbRed: 0.24, green: 0.48, blue: 1, alpha: 1).cgColor]
+            let gradient = CGGradient(colorsSpace: CGColorSpace(name: CGColorSpace.sRGB),
+                                      colors: colors as CFArray, locations: [0, 0.5, 1])!
+            ctx.drawLinearGradient(gradient, start: CGPoint(x: dropRect.minX, y: dropRect.maxY),
+                                   end: CGPoint(x: dropRect.maxX, y: dropRect.minY), options: [])
             ctx.restoreGState()
 
             // Hairline border that contrasts with the fill, so the drop never melts into the menu bar.
