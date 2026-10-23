@@ -57,7 +57,7 @@ struct PopoverView: View {
                     .background(.ultraThinMaterial, in: Circle())
             }
             .buttonStyle(.plain)
-            .help("Pick a color (⌃⌥⌘C)")
+            .help("Pick a color (⇧⌘C)")
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             .padding(10)
         }
@@ -80,7 +80,7 @@ struct PopoverView: View {
                     try? on ? SMAppService.mainApp.register() : SMAppService.mainApp.unregister()
                 }
             Spacer()
-            Text("⌃⌥⌘C")
+            Text("⇧⌘C")
                 .font(.system(size: 10.5, design: .monospaced))
                 .foregroundStyle(.secondary)
                 .help("Global shortcut to pick a color")

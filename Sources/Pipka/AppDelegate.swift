@@ -28,8 +28,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
             rootView: PopoverView(store: store, onPick: { [weak self] in self?.pick() })
         )
 
-        // ⌃⌥⌘C — pick from anywhere
-        hotKey = HotKey(keyCode: UInt32(kVK_ANSI_C), modifiers: UInt32(controlKey | optionKey | cmdKey)) { [weak self] in
+        // ⇧⌘C — pick from anywhere
+        hotKey = HotKey(keyCode: UInt32(kVK_ANSI_C), modifiers: UInt32(shiftKey | cmdKey)) { [weak self] in
             self?.pick()
         }
     }

@@ -20,7 +20,7 @@ Requires macOS 13+, Apple Silicon or Intel.
 - **Click the eyedropper** in the menu bar — the system loupe appears, click any pixel, the color is copied.
 - **Click the arrow** next to it (or right-click) — the last color in every format. Click a row to copy it;
   that format becomes the default for next picks.
-- **⌃⌥⌘C** — pick from anywhere.
+- **⇧⌘C** — pick from anywhere.
 - Formats: `HEX`, `rgb()`, `hsl()`, `oklch()`, `oklab()` (modern CSS syntax, sRGB).
 - Launch at login toggle in the popover.
 
